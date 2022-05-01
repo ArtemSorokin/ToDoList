@@ -1,5 +1,6 @@
 import React, {KeyboardEvent, ChangeEvent, useState} from "react";
 import {FilterValuesType, TasksType} from "./App";
+import AddFormForTodoList from "./AddFormForTodoList";
 
 
 
@@ -19,40 +20,16 @@ export type PropsType = {
 
 export function TodoList (props: PropsType) {
 
-    let [title, setTitle] = useState<string>('')
-    let [error, setError] = useState<boolean>(false)
 
-    const addTask = () => {
-        const trimedTitle = title.trim()
-        if(trimedTitle) {
-            props.addTask(trimedTitle, props.id)
-
-        } else {
-            setError(true)
-
-        }
-
-        setTitle('')
+    const addTask = (title: string) => {
+       props.addTask(title, props.id)   ////////////////////////////////
     }
-    const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-        setError(false)
-    }
-    const changeTitleByBut = (e: KeyboardEvent<HTMLInputElement>)=> {
-        if(e.key === 'Enter'){
-            addTask()
-        }
-    }
-
 
 
     const activeFilterButton = (filter: FilterValuesType)=> props.filter === filter? 'activeFilterButton' : ''
     const setAllFilterValue = ()=>{props.changeFilterValue('all', props.id)}
     const setActiveFilterValue = ()=>{props.changeFilterValue('active', props.id)}
     const setCompletedFilterValue = ()=>{props.changeFilterValue('completed', props.id)}
-
-
-
 
 
     const taskJSX = props.tasks.map( task => {
@@ -77,23 +54,14 @@ return(
     )
 })
 
-    const errorMessage = <div style={ {color: "red"} }> Title is Required </div>
+
 
     return (
         <div>
             <h3> {props.title}
             <button onClick={ ()=>{props.removeTodoList(props.id) }  } >X</button>
             </h3>
-            <div>
-                <input
-                    className={ error? 'errorInput': ''}
-                    value={title}
-                    onChange={changeTitle}
-                    onKeyPress={changeTitleByBut}
-                />
-                <button onClick={addTask}>+</button>
-                {error && errorMessage}
-            </div>
+                  <AddFormForTodoList addItem={addTask}/>
             <ul>
                 {taskJSX}
             </ul>
