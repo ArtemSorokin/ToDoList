@@ -49,10 +49,16 @@ function App() {
     })
 
 
-    const changeFilterValue = (filter: FilterValuesType, todolistID: string) => {
-        let newfilter = todolists.map(tl => tl.id === todolistID ? {...tl, filter: filter} : tl)
-        setTodolist(newfilter)
+                                    // ФУНКЦИИ ДЛЯ ТАСОК НУТРИ ТУДУЛИСТА
+
+
+
+    // Измение названия каждой отдельной таски
+    const changeTaskTitleValue = (title: string, todolistID: string) => {
+        let newTaskTitleValue = todolists.map(tl => tl.id === todolistID ? {...tl, title: title} : tl)
+        setTodolist(newTaskTitleValue)
     }
+    // Удаление таски
     const removeTask = (taskID: string, todolistID: string) => {
 
         const copyState = {...tasks}
@@ -71,17 +77,14 @@ function App() {
         setTasks(copyState)
     }
 
-
-
-
-
+// Изменение чекбокс
     const changeCheckStatus = (taskID: string, isDone: boolean, todolistID: string) => {
 
         const copyState = {...tasks}
         copyState[todolistID] = tasks[todolistID].map(t => t.id === taskID ? {...t, isDone: isDone} : t)
         setTasks(copyState)
     }
-
+// Логика смены показываемых тасок
     const getTaskForRender = (todolist: TodolistType) => {
         switch (todolist.filter) {
             case 'active':
@@ -93,6 +96,9 @@ function App() {
         }
     }
 
+                                // ФУНКЦИИ ТУДУЛИСТА
+
+// Удалеине тудулиста
     const removeTodoList = (id: string) => {
         setTodolist(todolists.filter(tl => tl.id !== id))
     }
@@ -108,6 +114,19 @@ function App() {
         setTasks({...tasks, [newToDo.id]: []})
 
     }
+    // Какие таски показывать, активные или нет.
+
+    const changeFilterValue = (filter: FilterValuesType, todolistID: string) => {
+        let newfilter = todolists.map(tl => tl.id === todolistID ? {...tl, filter: filter} : tl)
+        setTodolist(newfilter)
+    }
+    // Меняет название тудулиста
+
+    const changeTodoTitleValue = (title: string, todolistID: string) => {
+        let newTodoTitle = todolists.map(tl => tl.id === todolistID ? {...tl, title: title} : tl)
+        setTodolist(newTodoTitle)
+    }
+
 
     const todoListComponents = todolists.map(tl => {
 
