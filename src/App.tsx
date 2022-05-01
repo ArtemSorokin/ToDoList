@@ -54,9 +54,10 @@ function App() {
 
 
     // Измение названия каждой отдельной таски
-    const changeTaskTitleValue = (title: string, todolistID: string) => {
-        let newTaskTitleValue = todolists.map(tl => tl.id === todolistID ? {...tl, title: title} : tl)
-        setTodolist(newTaskTitleValue)
+    const changeTaskTitleValue = (taskId:string, title: string, todolistID: string) => {
+
+        setTasks( {...tasks,
+            [todolistID]: tasks[todolistID].map(t => t.id === taskId ? {...t, title: title} : t)})
     }
     // Удаление таски
     const removeTask = (taskID: string, todolistID: string) => {
@@ -146,6 +147,8 @@ function App() {
                         filter={tl.filter}
                         changeCheckStatus={changeCheckStatus}
                         removeTodoList={removeTodoList}
+                        changeTaskTitleValue={changeTaskTitleValue}
+                        changeTodoTitleValue={changeTodoTitleValue}
 
                     /></div>)
         }
