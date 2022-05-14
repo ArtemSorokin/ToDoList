@@ -1,20 +1,19 @@
-.App {
-  padding: 30px;
-  display: flex;
-}
+  /*.App {*/
+  /*padding: 10px;*/
+  /*}*/
 
-.App > div {
-  margin-right: 50px;
-}
+/*.App > div {*/
+/*  margin-right: 50px;*/
+/*}*/
 .is-done {
   opacity: 0.5;
 }
 
-.activeFilterButton {
-  background-color: green;
-}
+/*.activeFilterButton {*/
+/*  background-color: green;*/
+/*}*/
 
-.errorInput {
-  outline: green;
-  border: 2px solid red;
-}
+/*.errorInput {*/
+/*  outline: green;*/
+/*  border: 2px solid red;*/
+/*}*/

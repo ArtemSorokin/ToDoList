@@ -1,17 +1,19 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {Button, Container, TextField} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
+import AddBoxIcon from '@material-ui/icons/AddBox';
+
 
  export type AddFormForTodoListPropsType = {
    addItem:(title:string)=> void
 }
 
 
-
-const AddFormForTodoList = (props: AddFormForTodoListPropsType) => {
+ export const AddFormForTodoList = (props: AddFormForTodoListPropsType) => {
     let [title, setTitle] = useState<string>('')
     let [error, setError] = useState<boolean>(false)
 
     const errorMessage = <div style={ {color: "red"} }> Title is Required </div>
-
 
     // функции
     const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,16 +42,21 @@ const AddFormForTodoList = (props: AddFormForTodoListPropsType) => {
 
     return (
         <div>
-            <input
-                className={ error? 'errorInput': ''}
-                value={title}
-                onChange={changeTitle}
-                onKeyPress={changeTitleByBut}
+
+            <TextField id="outlined-basic" label="Name a task" variant="outlined"
+                       className={error ? 'errorInput' : ''}
+                       value={title}
+                       onChange={changeTitle}
+                       onKeyPress={changeTitleByBut}
+                       helperText={error && errorMessage}
+                       error={!!error}
+
             />
-            <button onClick={addTask}>+</button>
-            {error && errorMessage}
+            <Button color={ 'primary'}>
+                <AddBoxIcon fontSize={'large'} onClick={addTask}/>
+            </Button>
+
         </div>
     );
 };
 
-export default AddFormForTodoList;
