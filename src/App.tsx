@@ -25,12 +25,11 @@ type TaskStateType = {
     [key: string]: Array<TasksType>
 }
 
-export default App;
-
 
 function MenuIcon() {
     return null;
 }
+
 
 function App() {
     const todolistID_1 = v1()
@@ -55,15 +54,16 @@ function App() {
     })
 
 
-                                    // ФУНКЦИИ ДЛЯ ТАСОК НУТРИ ТУДУЛИСТА
-
+    // ФУНКЦИИ ДЛЯ ТАСОК НУТРИ ТУДУЛИСТА
 
 
     // Измение названия каждой отдельной таски
-    const changeTaskTitleValue = (taskId:string, title: string, todolistID: string) => {
+    const changeTaskTitleValue = (taskId: string, title: string, todolistID: string) => {
 
-        setTasks( {...tasks,
-            [todolistID]: tasks[todolistID].map(t => t.id === taskId ? {...t, title: title} : t)})
+        setTasks({
+            ...tasks,
+            [todolistID]: tasks[todolistID].map(t => t.id === taskId ? {...t, title: title} : t)
+        })
     }
     // Удаление таски
     const removeTask = (taskID: string, todolistID: string) => {
@@ -83,15 +83,14 @@ function App() {
         copyState[todolistID] = [newTask, ...tasks[todolistID]] //8888888888888888888888888888888
         setTasks(copyState)
     }
-
-// Изменение чекбокс
+    // Изменение чекбокс
     const changeCheckStatus = (taskID: string, isDone: boolean, todolistID: string) => {
 
         const copyState = {...tasks}
         copyState[todolistID] = tasks[todolistID].map(t => t.id === taskID ? {...t, isDone: isDone} : t)
         setTasks(copyState)
     }
-// Логика смены показываемых тасок
+    // Логика смены показываемых тасок
     const getTaskForRender = (todolist: TodolistType) => {
         switch (todolist.filter) {
             case 'active':
@@ -103,13 +102,14 @@ function App() {
         }
     }
 
-                                // ФУНКЦИИ ТУДУЛИСТА
+    // ФУНКЦИИ ТУДУЛИСТА
 
-// Удалеине тудулиста
+    // Удалеине тудулиста
     const removeTodoList = (id: string) => {
         setTodolist(todolists.filter(tl => tl.id !== id))
     }
     // Добавлеине туду листа
+
     const addToDoList = (newTitle: string) => {
 
         const newToDo: TodolistType = {
@@ -123,7 +123,7 @@ function App() {
     }
     // Какие таски показывать, активные или нет.
 
-    const changeFilterValue = (filter: FilterValuesType, todolistID: string) => {
+    const changeFilterValue = (filter: FilterValuesType, todolistID: string) =>     {
         let newfilter = todolists.map(tl => tl.id === todolistID ? {...tl, filter: filter} : tl)
         setTodolist(newfilter)
     }
@@ -134,55 +134,54 @@ function App() {
         setTodolist(newTodoTitle)
     }
 
-
     const todoListComponents = todolists.map(tl => {
 
-            const taskForRender = getTaskForRender(tl)
-            return (
-                    <Grid item  key={tl.id}>
-                    <Paper variant={"elevation"} square={false}>
-                        <TodoList
+        const taskForRender = getTaskForRender(tl)
+        return (
+            <Grid item key={tl.id}>
+                <Paper variant={"elevation"} square={false}>
+                    <TodoList
 
-                            id={tl.id}
-                            title={tl.title}
-                            //
-                            tasks={taskForRender}
-                            removeTask={removeTask}
-                            changeFilterValue={changeFilterValue}
-                            addTask={addTask}
-                            filter={tl.filter}
-                            changeCheckStatus={changeCheckStatus}
-                            removeTodoList={removeTodoList}
-                            changeTaskTitleValue={changeTaskTitleValue}
-                            changeTodoTitleValue={changeTodoTitleValue}
-                        />
-                    </Paper>
-                    </Grid>
-               )
-        }
-    )
+                        id={tl.id}
+                        title={tl.title}
+                        //
+                        tasks={taskForRender}
+                        removeTask={removeTask}
+                        changeFilterValue={changeFilterValue}
+                        addTask={addTask}
+                        filter={tl.filter}
+                        changeCheckStatus={changeCheckStatus}
+                        removeTodoList={removeTodoList}
+                        changeTaskTitleValue={changeTaskTitleValue}
+                        changeTodoTitleValue={changeTodoTitleValue}
+                    />
+                </Paper>
+            </Grid>
+        )
+    })
     return (
         <div className="App">
             <AppBar position="static">
                 <Toolbar style={{justifyContent: 'space-between'}}>
-                    <IconButton edge="start"  aria-label="menu">
+                    <IconButton edge="start" aria-label="menu">
                         <Menu color={'secondary'}/>
                     </IconButton>
-                    <Typography variant="h5" >
-                           Menu
+                    <Typography variant="h5">
+                        Menu
                     </Typography>
-                    <Button  variant={"outlined"} style={{ color: 'deeppink'}}> Logout</Button>
+                    <Button variant={"outlined"} style={{color: 'deeppink'}}> Logout</Button>
                 </Toolbar>
             </AppBar>
-            <Container fixed >
-                <Grid  container style={{padding: '10px'}}>
-            <AddFormForTodoList addItem={addToDoList}/>
+            <Container fixed>
+                <Grid container style={{padding: '10px'}}>
+                    <AddFormForTodoList addItem={addToDoList}/>
                 </Grid>
                 <Grid container spacing={5}>
-            {todoListComponents}
+                    {todoListComponents}
                 </Grid>
             </Container>
         </div>
     );
 }
 
+export default App;
