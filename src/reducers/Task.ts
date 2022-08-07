@@ -2,10 +2,9 @@
 // числа (неопределённое кол-во) и возвращает их сумму (rest).
 
 export function sum(...nums: Array<number>): number {
-     console.log(nums)
-    //...здесь пишем код.
-    // В return стоит "заглушка", чтоб typescript не ругался
-    return nums.reduce( (acc , el) => acc + el)
+    console.log(nums)
+
+    return nums.reduce((acc, el) => acc + el)
 }
 
 
@@ -17,15 +16,16 @@ export function sum(...nums: Array<number>): number {
 //  - "11", если треугольник обычный,
 //  - "00", если такого треугольника не существует.
 
-export function getTriangleType(a: number,b: number,c: number): string {
-    if(a===b && a === c){
-        return '10'
-    } else if (a < (b + c) && a===b || a ===c) {
-        return '01'
-    } else if(a!== b && a!== c) {
-        return '11'
-    } else return "00"
+export function getTriangleType(a: number, b: number, c: number): string {
+    let triangle = a + b > c && b + c > a && a + c > b
 
+    if (triangle && a === b && a === c) {
+        return '10'
+    } else if (triangle && (a === b || b === c || c === a)) {
+        return '01'
+    } else if (triangle && a !== b && a !== c && b !== a) {
+        return '11'
+    } else return "00" //
 
 
 }
@@ -34,14 +34,14 @@ export function getTriangleType(a: number,b: number,c: number): string {
 // 3. Функция getSum принимает параметром целое число и возвращает
 // сумму цифр этого числа
 
-export function getSum(number: number): number{
+export function getSum(number: number): number {
     //...здесь пишем код.
     // В return стоит "заглушка", чтоб typescript не ругался
     let arr = number.toString().split('')
-    let numArr =  arr.map( (it)=> Number(it))
+    let numArr = arr.map((it) => Number(it))
     console.log(numArr)
 
-    return  numArr.reduce((acc, el)=> acc + el )
+    return numArr.reduce((acc, el) => acc + el)
 }
 
 
@@ -49,14 +49,18 @@ export function getSum(number: number): number{
 // Если сумма чисел с чётными ИНДЕКСАМИ!!! (0 как чётный индекс) больше
 // суммы чисел с нечётными ИНДЕКСАМИ!!!, то функция возвращает true.
 // В противном случае - false.
-
+// [1, 100, 2, 200]
 export const isEvenIndexSumGreater = (arr: Array<number>): boolean => {
-    for(let i=0; i < arr.length; i++){
+    let chet = 0
+    let nechet = 0
 
+    for (let i = 0; i < arr.length; i++) {
+        if (i % 2 === 0) {
+            chet += arr[i]
+        } else nechet += arr[i]
     }
-    //...здесь пишем код.
-    // В return стоит "заглушка", чтоб typescript не ругался
-    return true
+
+    return chet > nechet
 }
 
 // 5. Функция getSquarePositiveIntegers принимает параметром массив чисел и возвращает новый массив.
@@ -64,35 +68,43 @@ export const isEvenIndexSumGreater = (arr: Array<number>): boolean => {
 // Исходный массив не мутирует.
 
 
-
 export function getSquarePositiveIntegers(array: Array<number>): Array<number> {
     //...здесь пишем код.
-    // В return стоит "заглушка", чтоб typescript не ругался
-    return []
+    let copyArr = [...array]
+    return copyArr.filter((el) => (el % 2 === 0) && el > 0).map(el => el * el);
+
+
 }
 
 // 6. Функция принимает параметром целое не отрицательное число N и возвращает сумму всех чисел от 0 до N включительно
-// Попробуйте реализовать функцию без использования перебирающих методов.
+
 
 export function sumFirstNumbers(N: number): number {
     //...здесь пишем код.
-    // В return стоит "заглушка", чтоб typescript не ругался
-    return 0
+    let count = 0
+    for (let i = 0; i <= N; i++) {
+        count = i + count
+    }
+
+    return count
 }
-
-// ...и "лапку" вверх!!!!
-
-
-// Д.З.:
-// 7. Функция-банкомат принимает параметром целое натуральное число (сумму).
-// Возвращает массив с наименьшим количеством купюр, которыми можно выдать эту
-// сумму. Доступны банкноты следующих номиналов:
-// const banknotes = [1000, 500, 100, 50, 20, 10, 5, 2, 1].
-// Считаем, что количество банкнот каждого номинала не ограничено
 
 
 export function getBanknoteList(amountOfMoney: number): Array<number> {
-    //...здесь пишем код.
-    // В return стоит "заглушка", чтоб typescript не ругался
-    return [1]
+    const banknotes = [1000, 500, 100, 50, 20, 10, 5, 2, 1];
+    let result = [];
+
+    if (amountOfMoney > 0) {
+        for (let i = 0; i < banknotes.length; i++) {
+            let local = banknotes[i]
+            while (amountOfMoney - banknotes[i] >= 0) {
+
+                amountOfMoney -= local
+                result.push(local)
+            }
+        }
+    }
+
+    return result
+
 }
