@@ -40,7 +40,6 @@ export function TodoList (props: PropsType) {
         const changeStatus = (e: ChangeEvent<HTMLInputElement>)=> props.changeCheckStatus(task.id, e.currentTarget.checked, props.id)
         const removeTask =()=> {props.removeTask(task.id, props.id) }
         const renameTaskTitle = (newTitle: string)=> { props.changeTaskTitleValue(task.id, newTitle, props.id)
-
         }
 
         const getClass = ()=> {
