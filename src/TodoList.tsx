@@ -1,8 +1,8 @@
-import React, {KeyboardEvent, ChangeEvent, useState} from "react";
+import React, { ChangeEvent} from "react";
 import {FilterValuesType, TasksType} from "./App";
 import {AddFormForTodoList} from "./AddFormForTodoList";
 import EditableSpan from "./EditableSpan";
-import {Button, Checkbox, FormControlLabel, IconButton} from "@material-ui/core";
+import {Button, Checkbox, IconButton} from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
@@ -19,15 +19,12 @@ export type PropsType = {
     removeTodoList: (id:string)=>void
     changeTaskTitleValue: (taskId:string, title: string, todolistID: string)=> void
     changeTodoTitleValue: (title: string, todolistID: string)=> void
-    // addToDoList:()=>void
-
 }
 
 export function TodoList (props: PropsType) {
 
-
     const addTask = (title: string) => {
-       props.addTask(title, props.id)   ////////////////////////////////
+       props.addTask(title, props.id)
     }
 
     const activeFilterButton = (filter: FilterValuesType)=> props.filter === filter? 'activeFilterButton' : ''
@@ -66,7 +63,6 @@ return(
 })
 
 // // тут название тудулиста в h3
-
 
     return (
         <div>

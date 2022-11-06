@@ -1,10 +1,17 @@
-import React, {useState} from 'react';
+import React, {useReducer, useState} from 'react';
 import './App.css';
 import {TodoList} from "./TodoList";
 import {v1} from "uuid";
 import {AddFormForTodoList} from "./AddFormForTodoList";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
+import {
+    addToDoListActionCreator,
+    changeFilterValueActionCreator, changeTodoTitleValueActionCreator,
+    RemoveToDoListActionCreator,
+    todolistsReducer
+} from "./reducers/todolists-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./reducers/tasks-reducer";
 
 
 export type TasksType = {
@@ -31,27 +38,28 @@ function MenuIcon() {
 }
 
 
-function App() {
+function AppWithReducer() {
     const todolistID_1 = v1()
     const todolistID_2 = v1()
 
-    const [todolists, setTodolist] = useState<Array<TodolistType>>([
+    const [todolists, dispathToTodolist] = useReducer(todolistsReducer, [
         {id: todolistID_1, title: 'What to learn', filter: 'all'},
         {id: todolistID_2, title: 'What to Buy', filter: 'all'}
     ])
 
-    const [tasks, setTasks] = useState<TaskStateType>({
-        [todolistID_1]: [
-            {id: v1(), isDone: true, title: 'HTML'},
-            {id: v1(), isDone: false, title: 'css'},
-            {id: v1(), isDone: false, title: 'js'}
-        ],
-        [todolistID_2]: [
-            {id: v1(), isDone: true, title: 'Milk'},
-            {id: v1(), isDone: false, title: 'Beer'},
-            {id: v1(), isDone: false, title: 'Lemon'}
-        ]
-    })
+const [tasks, dispathToTask] = useReducer(tasksReducer,{
+    [todolistID_1]: [
+        {id: v1(), isDone: true, title: 'HTML'},
+        {id: v1(), isDone: false, title: 'css'},
+        {id: v1(), isDone: false, title: 'js'}
+    ],
+    [todolistID_2]: [
+        {id: v1(), isDone: true, title: 'Milk'},
+        {id: v1(), isDone: false, title: 'Beer'},
+        {id: v1(), isDone: false, title: 'Lemon'}
+    ]
+} )
+
 
 
     // ФУНКЦИИ ДЛЯ ТАСОК НУТРИ ТУДУЛИСТА
@@ -59,36 +67,28 @@ function App() {
 
     // Измение названия каждой отдельной таски
     const changeTaskTitleValue = (taskId: string, title: string, todolistID: string) => {
-
-        setTasks({
-            ...tasks,
-            [todolistID]: tasks[todolistID].map(t => t.id === taskId ? {...t, title: title} : t)
-        })
+        let actiom =changeTaskTitleAC(taskId, title, todolistID)
+            dispathToTask(actiom)
     }
+
     // Удаление таски
     const removeTask = (taskID: string, todolistID: string) => {
 
-        const copyState = {...tasks}
-        copyState[todolistID] = tasks[todolistID].filter(tl => tl.id !== taskID)
-        setTasks(copyState)
-
+        let actiom = removeTaskAC(taskID, todolistID)
+        dispathToTask(actiom)
     }
+
+
     // добавление тасок в туду лист
     const addTask = (newTaskTitle: string, todolistID: string) => {
 
-        const newTask: TasksType = {
-            id: v1(), isDone: true, title: newTaskTitle
-        }
-        const copyState = {...tasks}
-        copyState[todolistID] = [newTask, ...tasks[todolistID]] //8888888888888888888888888888888
-        setTasks(copyState)
+        let action = addTaskAC(newTaskTitle, todolistID)
+        dispathToTask(action)
     }
     // Изменение чекбокс
     const changeCheckStatus = (taskID: string, isDone: boolean, todolistID: string) => {
-
-        const copyState = {...tasks}
-        copyState[todolistID] = tasks[todolistID].map(t => t.id === taskID ? {...t, isDone: isDone} : t)
-        setTasks(copyState)
+      let action = changeTaskStatusAC(taskID, isDone, todolistID )
+      dispathToTask(action)
     }
     // Логика смены показываемых тасок
     const getTaskForRender = (todolist: TodolistType) => {
@@ -106,32 +106,29 @@ function App() {
 
     // Удалеине тудулиста
     const removeTodoList = (id: string) => {
-        setTodolist(todolists.filter(tl => tl.id !== id))
+
+        dispathToTodolist(RemoveToDoListActionCreator(id))
     }
     // Добавлеине туду листа
 
     const addToDoList = (newTitle: string) => {
-
-        const newToDo: TodolistType = {
-            id: v1(),
-            title: newTitle,
-            filter: 'all'
-        }
-        setTodolist([...todolists, newToDo])
-        setTasks({...tasks, [newToDo.id]: []})
+        debugger
+          let action = addToDoListActionCreator(newTitle)
+        dispathToTodolist(action)
+        dispathToTask(action)
 
     }
+
     // Какие таски показывать, активные или нет.
 
     const changeFilterValue = (filter: FilterValuesType, todolistID: string) =>     {
-        let newfilter = todolists.map(tl => tl.id === todolistID ? {...tl, filter: filter} : tl)
-        setTodolist(newfilter)
+       dispathToTodolist(changeFilterValueActionCreator(filter, todolistID))
     }
     // Меняет название тудулиста
 
     const changeTodoTitleValue = (title: string, todolistID: string) => {
-        let newTodoTitle = todolists.map(tl => tl.id === todolistID ? {...tl, title: title} : tl)
-        setTodolist(newTodoTitle)
+
+        dispathToTodolist(changeTodoTitleValueActionCreator(title, todolistID))
     }
 
     const todoListComponents = todolists.map(tl => {
@@ -184,4 +181,4 @@ function App() {
     );
 }
 
-// export default App;
+export default AppWithReducer;
