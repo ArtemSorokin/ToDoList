@@ -27,11 +27,11 @@ type changeTodoTitleValueActionType = {
 
 type ActionsType =  removeToDoListActionType | addToDoListActionType | changeFilterValueActionType | changeTodoTitleValueActionType
 
+export const todolistId1 = v1()
 
 const initialState: Array<TodolistType> = [
-    {id: v1(), title: 'Todolist#1', filter: "active"},
-    {id: v1(), title: 'Todolist#1', filter: "completed"},
-    {id: v1(), title: 'Todolist#1', filter: "active"}
+
+
 ]
 
 export const todolistsReducer = (todolists = initialState, action: ActionsType): Array<TodolistType> => {

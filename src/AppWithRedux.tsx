@@ -80,21 +80,7 @@ function AppWithRedux() {
         dispathForAll(action)
     }
     // Логика смены показываемых тасок
-    const getTaskForRender = (todolist: TodolistType) => {
 
-            switch (todolist.filter) {
-
-            case 'active':
-                debugger
-                return tasks[todolist.id].filter(task => !task.isDone)
-            case 'completed':
-                debugger
-                return tasks[todolist.id].filter(task => task.isDone)
-            default:
-                debugger
-                return tasks[todolist.id]
-        }
-    }
     // ФУНКЦИИ ТУДУЛИСТА
 
     const removeTodoList = (id: string) => {
@@ -102,7 +88,7 @@ function AppWithRedux() {
         dispathForAll(RemoveToDoListActionCreator(id))
     }
     const addToDoList = (newTitle: string) => {
-        debugger
+
           let action = addToDoListActionCreator(newTitle)
         dispathForAll(action)
 
@@ -114,9 +100,18 @@ function AppWithRedux() {
         dispathForAll(changeTodoTitleValueActionCreator(title, todolistID))
     }
     const todoListComponents = todolists.map(tl => {
-        debugger
+        let allTodolistTasks = tasks[tl.id]
 
-        const taskForRender = getTaskForRender(tl)
+        let tasksForTodolist = allTodolistTasks
+
+        if(tl.filter === "active"){
+            tasksForTodolist =  tasks[tl.id].filter(task => !task.isDone)
+        }
+        if(tl.filter === "completed"){
+            tasksForTodolist =  tasks[tl.id].filter(task => task.isDone)
+        }
+
+
         return (
 
             <Grid item key={tl.id}>
@@ -126,7 +121,7 @@ function AppWithRedux() {
                         id={tl.id}
                         title={tl.title}
                         //
-                        tasks={taskForRender}
+                        tasks={tasksForTodolist}
                         removeTask={removeTask}
                         changeFilterValue={changeFilterValue}
                         addTask={addTask}
