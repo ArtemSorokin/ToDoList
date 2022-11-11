@@ -14,6 +14,7 @@ import {
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./reducers/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {rootReduser, rootStateType} from "./reducers/srore";
+import {TodoListByRedux} from "./TodoListByRedux";
 
 
 export type TasksType = {
@@ -116,20 +117,22 @@ function AppWithRedux() {
 
             <Grid item key={tl.id}>
                 <Paper variant={"elevation"} square={false}>
-                    <TodoList
-
+                    <TodoListByRedux
                         id={tl.id}
                         title={tl.title}
-                        //
-                        tasks={tasksForTodolist}
-                        removeTask={removeTask}
-                        changeFilterValue={changeFilterValue}
-                        addTask={addTask}
                         filter={tl.filter}
-                        changeCheckStatus={changeCheckStatus}
-                        removeTodoList={removeTodoList}
-                        changeTaskTitleValue={changeTaskTitleValue}
-                        changeTodoTitleValue={changeTodoTitleValue}
+
+                        // title={tl.title}
+                        // //
+                        // tasks={tasksForTodolist}
+                        // removeTask={removeTask}
+                        // changeFilterValue={changeFilterValue}
+                        // addTask={addTask}
+                        // filter={tl.filter}
+                        // changeCheckStatus={changeCheckStatus}
+                        // removeTodoList={removeTodoList}
+                        // changeTaskTitleValue={changeTaskTitleValue}
+                        // changeTodoTitleValue={changeTodoTitleValue}
                     />
                 </Paper>
             </Grid>
