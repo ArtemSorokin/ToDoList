@@ -31,6 +31,7 @@ const initialSTate: TaskStateType = {
 }
 
 export const tasksReducer = (state = initialSTate, action: ActionTypes): TaskStateType => {
+    //debugger
 
     switch (action.type) {
         case 'RemoveTask':
@@ -65,7 +66,7 @@ export const tasksReducer = (state = initialSTate, action: ActionTypes): TaskSta
         case 'ADD-TODOLIST':
 
             return {
-                ...state,
+                ...state,[action.todolistId]: []
 
             }
         case 'REMOVE-TODOLIST':

@@ -10,7 +10,8 @@ import {rootReduser, rootStateType} from "./reducers/srore";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./reducers/tasks-reducer";
 import {
     changeFilterValueActionCreator,
-    changeTodoTitleValueActionCreator, RemoveToDoListActionCreator,
+    changeTodoTitleValueActionCreator,
+    RemoveToDoListActionCreator,
     todolistsReducer
 } from "./reducers/todolists-reducer";
 
@@ -27,25 +28,24 @@ export type PropsType = {
     // removeTodoList: (id: string) => void
     // changeTaskTitleValue: (taskId: string, title: string, todolistID: string) => void
     // changeTodoTitleValue: (title: string, todolistID: string) => void
-    id: string
-    title: string
-    filter: FilterValuesType
+  todolist: TodolistType
 }
 
-export const TodoListByRedux: React.FC<PropsType> = (
-    {id,title,filter  } )=> {
+export const TodoListByRedux = ({todolist}:PropsType )=> {
+    const {id, title, filter} = todolist
 
 
-    let tasks = useSelector<rootStateType, TaskStateType>(state => state.tasks)
+
+    let tasks = useSelector<rootStateType, Array<TasksType>>(state => state.tasks[id])
 
     let dispatch = useDispatch()
 
-
     const addTask = (title: string) => {
-        debugger
+        //debugger
+
         dispatch(addTaskAC(title, id))
     }
-    const removeTodoList = ()=> {             /// //////////////////////////////////////////////////////////////////////
+    const removeTodoList = ()=> {
         let action = RemoveToDoListActionCreator(id)
         dispatch(action)
     }
@@ -53,7 +53,7 @@ export const TodoListByRedux: React.FC<PropsType> = (
     const activeFilterButton = (filter: FilterValuesType) => filter === filter ? 'activeFilterButton' : ''
 
     const setAllFilterValue = () => {
-
+        dispatch(changeFilterValueActionCreator('all', id))
     }
     const setActiveFilterValue = () => {
         dispatch(changeFilterValueActionCreator('active', id))
@@ -64,10 +64,14 @@ export const TodoListByRedux: React.FC<PropsType> = (
     const renameTodolistTitle = (newTitle: string) => {
        dispatch(changeTodoTitleValueActionCreator(newTitle, id))
     }
-
-
-
-    const taskJSX = tasks.map( (task:TasksType) => {
+    let tasksForRender = tasks
+    if(filter === "active"){
+        tasksForRender =  tasks.filter(task => !task.isDone)
+    }
+    if(filter === "completed"){
+        tasksForRender =  tasks.filter(task => task.isDone)
+    }
+    const taskJSX = tasksForRender.map( (task) => {
 
         const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
             dispatch(changeTaskStatusAC(task.id, e.currentTarget.checked, id))

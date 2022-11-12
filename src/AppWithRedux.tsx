@@ -45,8 +45,9 @@ function AppWithRedux() {
 
 
 
+
     const todolists = useSelector<rootStateType, Array<TodolistType>>(state => state.todolists)
-    const tasks = useSelector<rootStateType, TaskStateType>(state=> state.tasks)
+  //  const tasks = useSelector<rootStateType, TaskStateType>(state=> state.tasks)
 
     const dispathForAll = useDispatch()
 
@@ -101,16 +102,16 @@ function AppWithRedux() {
         dispathForAll(changeTodoTitleValueActionCreator(title, todolistID))
     }
     const todoListComponents = todolists.map(tl => {
-        let allTodolistTasks = tasks[tl.id]
-
-        let tasksForTodolist = allTodolistTasks
-
-        if(tl.filter === "active"){
-            tasksForTodolist =  tasks[tl.id].filter(task => !task.isDone)
-        }
-        if(tl.filter === "completed"){
-            tasksForTodolist =  tasks[tl.id].filter(task => task.isDone)
-        }
+        // let allTodolistTasks = tasks[tl.id]
+        //
+        // let tasksForTodolist = allTodolistTasks
+        //
+        // if(tl.filter === "active"){
+        //     tasksForTodolist =  tasks[tl.id].filter(task => !task.isDone)
+        // }
+        // if(tl.filter === "completed"){
+        //     tasksForTodolist =  tasks[tl.id].filter(task => task.isDone)
+        // }
 
 
         return (
@@ -118,10 +119,7 @@ function AppWithRedux() {
             <Grid item key={tl.id}>
                 <Paper variant={"elevation"} square={false}>
                     <TodoListByRedux
-                        id={tl.id}
-                        title={tl.title}
-                        filter={tl.filter}
-
+                        todolist={tl}
                         // title={tl.title}
                         // //
                         // tasks={tasksForTodolist}

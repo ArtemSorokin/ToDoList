@@ -35,6 +35,7 @@ const initialState: Array<TodolistType> = [
 ]
 
 export const todolistsReducer = (todolists = initialState, action: ActionsType): Array<TodolistType> => {
+    //debugger
     switch (action.type) {
         case 'REMOVE-TODOLIST':
             return todolists.filter(tl => tl.id !== action.id)
