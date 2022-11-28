@@ -1,7 +1,5 @@
-import React, {useReducer, useState} from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
-import {TodoList} from "./TodoList";
-import {v1} from "uuid";
 import {AddFormForTodoList} from "./AddFormForTodoList";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
@@ -71,11 +69,10 @@ function AppWithRedux() {
 
 
     // добавление тасок в туду лист
-    const addTask = (newTaskTitle: string, todolistID: string) => {
-
-        let action = addTaskAC(newTaskTitle, todolistID)
-        dispathForAll(action)
-    }
+    // const addTask = (newTaskTitle: string, todolistID: string) => {
+    //     let action = addTaskAC(newTaskTitle, todolistID)
+    //     dispathForAll(action)
+    // }
     // Изменение чекбокс
     const changeCheckStatus = (taskID: string, isDone: boolean, todolistID: string) => {
       let action = changeTaskStatusAC(taskID, isDone, todolistID )
@@ -85,37 +82,25 @@ function AppWithRedux() {
 
     // ФУНКЦИИ ТУДУЛИСТА
 
-    const removeTodoList = (id: string) => {
+    // const removeTodoList = (id: string) => {
+    //
+    //     dispathForAll(RemoveToDoListActionCreator(id))
+    // }
+    const addToDoList = useCallback((newTitle: string) => {
 
-        dispathForAll(RemoveToDoListActionCreator(id))
-    }
-    const addToDoList = (newTitle: string) => {
-
-          let action = addToDoListActionCreator(newTitle)
+        let action = addToDoListActionCreator(newTitle)
         dispathForAll(action)
+    }, [dispathForAll])
 
-    }
-    const changeFilterValue = (filter: FilterValuesType, todolistID: string) =>     {
-        dispathForAll(changeFilterValueActionCreator(filter, todolistID))
-    }
-    const changeTodoTitleValue = (title: string, todolistID: string) => {
-        dispathForAll(changeTodoTitleValueActionCreator(title, todolistID))
-    }
+    // const changeFilterValue = (filter: FilterValuesType, todolistID: string) =>     {
+    //     dispathForAll(changeFilterValueActionCreator(filter, todolistID))
+    // }
+    // const changeTodoTitleValue = (title: string, todolistID: string) => {
+    //     dispathForAll(changeTodoTitleValueActionCreator(title, todolistID))
+    // }
+
     const todoListComponents = todolists.map(tl => {
-        // let allTodolistTasks = tasks[tl.id]
-        //
-        // let tasksForTodolist = allTodolistTasks
-        //
-        // if(tl.filter === "active"){
-        //     tasksForTodolist =  tasks[tl.id].filter(task => !task.isDone)
-        // }
-        // if(tl.filter === "completed"){
-        //     tasksForTodolist =  tasks[tl.id].filter(task => task.isDone)
-        // }
-
-
         return (
-
             <Grid item key={tl.id}>
                 <Paper variant={"elevation"} square={false}>
                     <TodoListByRedux

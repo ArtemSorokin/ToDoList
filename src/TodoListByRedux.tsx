@@ -1,5 +1,5 @@
-import React, {ChangeEvent} from "react";
-import {FilterValuesType, TaskStateType, TasksType} from "./App";
+import React, {ChangeEvent, useCallback} from "react";
+import {FilterValuesType, TaskStateType, TasksType} from "./AppWithRedux";
 import {AddFormForTodoList} from "./AddFormForTodoList";
 import EditableSpan from "./EditableSpan";
 import {Button, Checkbox, IconButton} from "@material-ui/core";
@@ -34,23 +34,19 @@ export type PropsType = {
 export const TodoListByRedux = ({todolist}:PropsType )=> {
     const {id, title, filter} = todolist
 
-
-
     let tasks = useSelector<rootStateType, Array<TasksType>>(state => state.tasks[id])
-
     let dispatch = useDispatch()
+    const activeFilterButton = (filter: FilterValuesType) => filter === filter ? 'activeFilterButton' : ''
 
-    const addTask = (title: string) => {
-        //debugger
+
+    const addTask = useCallback((title: string) => {
 
         dispatch(addTaskAC(title, id))
-    }
+    }, [title])
     const removeTodoList = ()=> {
         let action = RemoveToDoListActionCreator(id)
         dispatch(action)
     }
-
-    const activeFilterButton = (filter: FilterValuesType) => filter === filter ? 'activeFilterButton' : ''
 
     const setAllFilterValue = () => {
         dispatch(changeFilterValueActionCreator('all', id))
@@ -64,6 +60,7 @@ export const TodoListByRedux = ({todolist}:PropsType )=> {
     const renameTodolistTitle = (newTitle: string) => {
        dispatch(changeTodoTitleValueActionCreator(newTitle, id))
     }
+
     let tasksForRender = tasks
     if(filter === "active"){
         tasksForRender =  tasks.filter(task => !task.isDone)

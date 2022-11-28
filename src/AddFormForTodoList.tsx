@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 import {Button, Container, TextField} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import AddBoxIcon from '@material-ui/icons/AddBox';
@@ -9,54 +9,57 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 }
 
 
- export const AddFormForTodoList = (props: AddFormForTodoListPropsType) => {
-    let [title, setTitle] = useState<string>('')
-    let [error, setError] = useState<boolean>(false)
+ export const AddFormForTodoList = memo((props: AddFormForTodoListPropsType) => {
 
-    const errorMessage = <div style={ {color: "red"} }> Title is Required </div>
+     console.log('AddFormFor TodoList - Отрисовался')
 
-    // функции
-    const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-        setError(false)
-    }
+     let [title, setTitle] = useState<string>('')
+     let [error, setError] = useState<boolean>(false)
 
-    const changeTitleByBut = (e: KeyboardEvent<HTMLInputElement>)=> {
-        if(e.key === 'Enter'){
-            addTask()
-        }
-    }
+     const errorMessage = <div style={ {color: "red"} }> Title is Required </div>
 
-    const addTask = () => {
-        const trimedTitle = title.trim()
-        if(trimedTitle) {
-            props.addItem(trimedTitle)
+     // функции
+     const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
+         setTitle(e.currentTarget.value)
+         setError(false)
+     }
 
-        } else {
-            setError(true)
+     const changeTitleByBut = (e: KeyboardEvent<HTMLInputElement>)=> {
+         if(e.key === 'Enter'){
+             addTask()
+         }
+     }
 
-        }
+     const addTask = () => {
+         const trimedTitle = title.trim()
+         if(trimedTitle) {
+             props.addItem(trimedTitle)
 
-        setTitle('')
-    }
+         } else {
+             setError(true)
 
-    return (
-        <div>
+         }
 
-            <TextField id="outlined-basic" label="Name a task" variant="outlined"
-                       className={error ? 'errorInput' : ''}
-                       value={title}
-                       onChange={changeTitle}
-                       onKeyPress={changeTitleByBut}
-                       helperText={error && errorMessage}
-                       error={!!error}
+         setTitle('')
+     }
 
-            />
-            <Button color={ 'primary'}>
-                <AddBoxIcon fontSize={'large'} onClick={addTask}/>
-            </Button>
+     return (
+         <div>
 
-        </div>
-    );
-};
+             <TextField id="outlined-basic" label="Name a task" variant="outlined"
+                        className={error ? 'errorInput' : ''}
+                        value={title}
+                        onChange={changeTitle}
+                        onKeyPress={changeTitleByBut}
+                        helperText={error && errorMessage}
+                        error={error}
+
+             />
+             <Button color={ 'primary'}>
+                 <AddBoxIcon fontSize={'large'} onClick={addTask}/>
+             </Button>
+
+         </div>
+     );
+ } )
 
