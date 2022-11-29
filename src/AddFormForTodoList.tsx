@@ -11,7 +11,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 
  export const AddFormForTodoList = memo((props: AddFormForTodoListPropsType) => {
 
-     console.log('AddFormFor TodoList - Отрисовался')
+     console.log('AddFormFor - Отрисовался')
 
      let [title, setTitle] = useState<string>('')
      let [error, setError] = useState<boolean>(false)

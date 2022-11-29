@@ -55,17 +55,17 @@ function AppWithRedux() {
 
 
     // Измение названия каждой отдельной таски
-    const changeTaskTitleValue = (taskId: string, title: string, todolistID: string) => {
-        let actiom =changeTaskTitleAC(taskId, title, todolistID)
-        dispathForAll(actiom)
-    }
+    // const changeTaskTitleValue = (taskId: string, title: string, todolistID: string) => {
+    //     let actiom =changeTaskTitleAC(taskId, title, todolistID)
+    //     dispathForAll(actiom)
+    // }
 
     // Удаление таски
-    const removeTask = (taskID: string, todolistID: string) => {
-
-        let actiom = removeTaskAC(taskID, todolistID)
-        dispathForAll(actiom)
-    }
+    // const removeTask = (taskID: string, todolistID: string) => {
+    //
+    //     let actiom = removeTaskAC(taskID, todolistID)
+    //     dispathForAll(actiom)
+    // }
 
 
     // добавление тасок в туду лист
@@ -74,10 +74,10 @@ function AppWithRedux() {
     //     dispathForAll(action)
     // }
     // Изменение чекбокс
-    const changeCheckStatus = (taskID: string, isDone: boolean, todolistID: string) => {
-      let action = changeTaskStatusAC(taskID, isDone, todolistID )
-        dispathForAll(action)
-    }
+    // const changeCheckStatus = (taskID: string, isDone: boolean, todolistID: string) => {
+    //   let action = changeTaskStatusAC(taskID, isDone, todolistID )
+    //     dispathForAll(action)
+    // }
     // Логика смены показываемых тасок
 
     // ФУНКЦИИ ТУДУЛИСТА

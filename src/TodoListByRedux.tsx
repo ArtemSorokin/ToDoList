@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useCallback} from "react";
+import React, {ChangeEvent, memo, useCallback} from "react";
 import {FilterValuesType, TaskStateType, TasksType} from "./AppWithRedux";
 import {AddFormForTodoList} from "./AddFormForTodoList";
 import EditableSpan from "./EditableSpan";
@@ -31,34 +31,36 @@ export type PropsType = {
   todolist: TodolistType
 }
 
-export const TodoListByRedux = ({todolist}:PropsType )=> {
+export const TodoListByRedux = memo (({todolist}:PropsType )=> {
+    console.log('Todolist')
+
     const {id, title, filter} = todolist
 
     let tasks = useSelector<rootStateType, Array<TasksType>>(state => state.tasks[id])
     let dispatch = useDispatch()
     const activeFilterButton = (filter: FilterValuesType) => filter === filter ? 'activeFilterButton' : ''
 
+/// лишняя отрисовка зачем я написал юзколлбэк ?
 
     const addTask = useCallback((title: string) => {
 
         dispatch(addTaskAC(title, id))
-    }, [title])
+    }, [title, id])
     const removeTodoList = ()=> {
         let action = RemoveToDoListActionCreator(id)
         dispatch(action)
     }
-
-    const setAllFilterValue = () => {
+    const setAllFilterValue = useCallback( () => {
         dispatch(changeFilterValueActionCreator('all', id))
-    }
-    const setActiveFilterValue = () => {
+    }, [filter, id])
+    const setActiveFilterValue = useCallback(() => {
         dispatch(changeFilterValueActionCreator('active', id))
-    }
-    const setCompletedFilterValue = () => {
+    }, [filter, id])
+    const setCompletedFilterValue = useCallback(() => {
         dispatch(changeFilterValueActionCreator('completed', id))
-    }
+    }, [filter, id])
     const renameTodolistTitle = (newTitle: string) => {
-       dispatch(changeTodoTitleValueActionCreator(newTitle, id))
+        dispatch(changeTodoTitleValueActionCreator(newTitle, id))
     }
 
     let tasksForRender = tasks
@@ -150,7 +152,7 @@ export const TodoListByRedux = ({todolist}:PropsType )=> {
         </div>
     )
 
-}
+})
 
 
 
