@@ -14,6 +14,7 @@ import {
     RemoveToDoListActionCreator,
     todolistsReducer
 } from "./reducers/todolists-reducer";
+import {Task} from "./Task";
 
 
 export type PropsType = {
@@ -59,9 +60,9 @@ export const TodoListByRedux = memo (({todolist}:PropsType )=> {
     const setCompletedFilterValue = useCallback(() => {
         dispatch(changeFilterValueActionCreator('completed', id))
     }, [filter, id])
-    const renameTodolistTitle = (newTitle: string) => {
+    const renameTodolistTitle = useCallback((newTitle: string) => {
         dispatch(changeTodoTitleValueActionCreator(newTitle, id))
-    }
+    }, [id])
 
     let tasksForRender = tasks
     if(filter === "active"){
@@ -72,37 +73,8 @@ export const TodoListByRedux = memo (({todolist}:PropsType )=> {
     }
     const taskJSX = tasksForRender.map( (task) => {
 
-        const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
-            dispatch(changeTaskStatusAC(task.id, e.currentTarget.checked, id))
-        }
-        const removeTask = () => {
-            dispatch(removeTaskAC(task.id, id))
-        }
-        const renameTaskTitle = (newTitle: string) => {
-            dispatch(changeTaskTitleAC(task.id, newTitle, id))
-        }
 
-        const getClass = () => {
-            if (task.isDone) {
-                return 'is-done'
-            }
-            return ''
-        }
-        return (
-            <li key={task.id} className={getClass()}>
-                <Checkbox
-                    defaultChecked
-                    color="primary"
-                    inputProps={{'aria-label': 'secondary checkbox'}}
-                    checked={task.isDone}
-                    onChange={changeStatus}
-                />
-                <EditableSpan title={task.title} renameTaskTitle={renameTaskTitle}/>
-                <IconButton>
-                    <DeleteIcon onClick={removeTask}/>
-                </IconButton>
-            </li>
-        )
+        return  <Task task={task} changeStatus={} renameTaskTitle={} removeTask={}     />
     })
 
 // // тут название тудулиста в h3
