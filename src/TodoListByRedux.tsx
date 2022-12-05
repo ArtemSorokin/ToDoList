@@ -46,7 +46,7 @@ export const TodoListByRedux = memo (({todolist}:PropsType )=> {
     const addTask = useCallback((title: string) => {
 
         dispatch(addTaskAC(title, id))
-    }, [title, id])
+    }, [dispatch])
     const removeTodoList = ()=> {
         let action = RemoveToDoListActionCreator(id)
         dispatch(action)
@@ -64,6 +64,10 @@ export const TodoListByRedux = memo (({todolist}:PropsType )=> {
         dispatch(changeTodoTitleValueActionCreator(newTitle, id))
     }, [id])
 
+
+    //Tasks
+
+
     let tasksForRender = tasks
     if(filter === "active"){
         tasksForRender =  tasks.filter(task => !task.isDone)
@@ -71,13 +75,23 @@ export const TodoListByRedux = memo (({todolist}:PropsType )=> {
     if(filter === "completed"){
         tasksForRender =  tasks.filter(task => task.isDone)
     }
+
+    const changeStatus = useCallback((taskId: string, isDone:boolean) => {
+        dispatch(changeTaskStatusAC(taskId, isDone, id))
+    },[dispatch])
+    const removeTask = useCallback((taskId:string) => {
+        dispatch(removeTaskAC(taskId, id))
+    }, [dispatch])
+    const renameTaskTitle = useCallback((taskId: string, newTitle: string) => {
+        dispatch(changeTaskTitleAC(taskId, newTitle, id))
+    }, [dispatch])
+
     const taskJSX = tasksForRender.map( (task) => {
 
 
-        return  <Task task={task} changeStatus={} renameTaskTitle={} removeTask={}     />
+        return  <Task task={task} changeStatus={changeStatus} renameTaskTitle={renameTaskTitle} removeTask={removeTask} />
     })
 
-// // тут название тудулиста в h3
 
     return (
         <div>

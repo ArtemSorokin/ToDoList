@@ -33,23 +33,12 @@ export type TaskStateType = {
     [key: string]: Array<TasksType>
 }
 
-
-function MenuIcon() {
-    return null;
-}
-
-
 function AppWithRedux() {
-
-
-
 
     const todolists = useSelector<rootStateType, Array<TodolistType>>(state => state.todolists)
   //  const tasks = useSelector<rootStateType, TaskStateType>(state=> state.tasks)
 
     const dispathForAll = useDispatch()
-
-
 
     // ФУНКЦИИ ДЛЯ ТАСОК НУТРИ ТУДУЛИСТА
 

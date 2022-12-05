@@ -1,36 +1,37 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, memo} from 'react';
 import {Checkbox, IconButton} from "@material-ui/core";
 import EditableSpan from "./EditableSpan";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {TasksType} from "./AppWithRedux";
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./reducers/tasks-reducer";
+
 
 
 export type TaskSeparetedComponentPropsType = {
     task: TasksType
-    changeStatus: (taskId: string, title: string, todolistID: string) => void
-    renameTaskTitle: (taskId: string, title: string, todolistID: string) => void
-    removeTask:(taskID: string, todolistID: string)=> void
+    changeStatus: (taskId: string, isDone: boolean) => void
+    renameTaskTitle: (taskId: string, title: string) => void
+    removeTask:(taskID: string)=> void
 
 }
 
-export const Task = ({
+export const Task = React.memo(({
                          task,
                          changeStatus,
                          renameTaskTitle,
                          removeTask,
-                         getClass
-
                      }: TaskSeparetedComponentPropsType) => {
 
-    const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(changeTaskStatusAC(task.id, e.currentTarget.checked, id))
+    console.log('TaskRedered')
+
+    const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
+        changeStatus(task.id, e.currentTarget.checked)
+
     }
-    const removeTask = () => {
-        dispatch(removeTaskAC(task.id, id))
+    const removeTaskItem = () => {
+        removeTask(task.id)
     }
-    const renameTaskTitle = (newTitle: string) => {
-        dispatch(changeTaskTitleAC(task.id, newTitle, id))
+    const renameTaskTitleValue = () => {
+        renameTaskTitle(task.id,task.title)
     }
 
     const getClass = () => {
@@ -42,21 +43,21 @@ export const Task = ({
 
     return (
         <div>
-            <li key={task.id} className={getClass}>
+            <li key={task.id} className={getClass()}>
                 <Checkbox
                     defaultChecked
                     color="primary"
                     inputProps={{'aria-label': 'secondary checkbox'}}
                     checked={task.isDone}
-                    onChange={changeStatus}
+                    onChange={changeTaskStatus}
                 />
-                <EditableSpan title={task.title} renameTaskTitle={renameTaskTitle}/>
+                <EditableSpan title={task.title} renameTaskTitle={renameTaskTitleValue}/>
                 <IconButton>
-                    <DeleteIcon onClick={removeTask}/>
+                    <DeleteIcon onClick={removeTaskItem}/>
                 </IconButton>
             </li>
 
         </div>
     );
-};
+});
 
