@@ -29,10 +29,10 @@ export type PropsType = {
     // removeTodoList: (id: string) => void
     // changeTaskTitleValue: (taskId: string, title: string, todolistID: string) => void
     // changeTodoTitleValue: (title: string, todolistID: string) => void
-  todolist: TodolistType
+    todolist: TodolistType
 }
 
-export const TodoListByRedux = memo (({todolist}:PropsType )=> {
+export const TodoListByRedux = memo(({todolist}: PropsType) => {
     console.log('Todolist')
 
     const {id, title, filter} = todolist
@@ -47,11 +47,11 @@ export const TodoListByRedux = memo (({todolist}:PropsType )=> {
 
         dispatch(addTaskAC(title, id))
     }, [dispatch])
-    const removeTodoList = ()=> {
+    const removeTodoList = () => {
         let action = RemoveToDoListActionCreator(id)
         dispatch(action)
     }
-    const setAllFilterValue = useCallback( () => {
+    const setAllFilterValue = useCallback(() => {
         dispatch(changeFilterValueActionCreator('all', id))
     }, [filter, id])
     const setActiveFilterValue = useCallback(() => {
@@ -69,27 +69,27 @@ export const TodoListByRedux = memo (({todolist}:PropsType )=> {
 
 
     let tasksForRender = tasks
-    if(filter === "active"){
-        tasksForRender =  tasks.filter(task => !task.isDone)
+    if (filter === "active") {
+        tasksForRender = tasks.filter(task => !task.isDone)
     }
-    if(filter === "completed"){
-        tasksForRender =  tasks.filter(task => task.isDone)
+    if (filter === "completed") {
+        tasksForRender = tasks.filter(task => task.isDone)
     }
 
-    const changeStatus = useCallback((taskId: string, isDone:boolean) => {
+    const changeStatus = useCallback((taskId: string, isDone: boolean) => {
         dispatch(changeTaskStatusAC(taskId, isDone, id))
-    },[dispatch])
-    const removeTask = useCallback((taskId:string) => {
+    }, [dispatch])
+    const removeTask = useCallback((taskId: string) => {
         dispatch(removeTaskAC(taskId, id))
     }, [dispatch])
     const renameTaskTitle = useCallback((taskId: string, newTitle: string) => {
         dispatch(changeTaskTitleAC(taskId, newTitle, id))
     }, [dispatch])
 
-    const taskJSX = tasksForRender.map( (task) => {
+    const taskJSX = tasksForRender.map((task) => {
 
 
-        return  <Task task={task} changeStatus={changeStatus} renameTaskTitle={renameTaskTitle} removeTask={removeTask} />
+        return <Task task={task} changeStatus={changeStatus} renameTaskTitle={renameTaskTitle} removeTask={removeTask}/>
     })
 
 
@@ -109,34 +109,59 @@ export const TodoListByRedux = memo (({todolist}:PropsType )=> {
                 {taskJSX}
             </ul>
             <div>
-                <Button
+                <ButtonComponent
 
                     // style={ {margin: '3px'}}
                     size={'small'}
                     variant={'contained'}
-                    color={filter === 'all' ? 'secondary' : 'primary'}
-                    // className={activeFilterButton('all')}
-                    onClick={setAllFilterValue}>All
-                </Button>
-                <Button
+                    color={'default'}
+                    filterValue={filter}
+                    setFilterValue={setAllFilterValue}
+                    titleButton='all'
+                />
+                <ButtonComponent
                     size={'small'}
-                    color={filter === 'active' ? 'secondary' : 'primary'}
+                    color={'default'}
                     variant={'contained'}
-                    className={activeFilterButton('active')}
-                    onClick={setActiveFilterValue}>Active
-                </Button>
-                <Button
+                    filterValue={filter}
+                    setFilterValue={setActiveFilterValue}
+                    titleButton='active'
+                />
+                <ButtonComponent
                     size={'small'}
-                    style={{marginLeft: '3px'}}
                     variant={'contained'}
-                    color={filter === 'completed' ? 'secondary' : 'primary'}
+                    color={'default'}
+                    setFilterValue={setCompletedFilterValue}
+                    titleButton='completed'
+                    filterValue={filter}
+                />
 
-                    className={activeFilterButton('completed')}
-                    onClick={setCompletedFilterValue}>Completed
-                </Button>
             </div>
         </div>
     )
+
+})
+type ButtonComponentPropsType = {
+    size: 'small' | 'medium' | 'large'
+    color: 'inherit' | 'primary' | 'secondary' | 'default'
+    variant: 'text' | 'outlined' | 'contained'
+    titleButton: FilterValuesType
+    setFilterValue: () => void
+    filterValue: string
+}
+
+export const ButtonComponent = memo((props: ButtonComponentPropsType) => {
+    console.log('ButtonComponent')
+
+    return (
+        <Button
+            size={props.size}
+            color={props.titleButton === props.filterValue ? 'secondary' : 'primary'}
+            variant={props.variant}
+            onClick={props.setFilterValue}> {props.titleButton}
+        </Button>
+    )
+
 
 })
 
