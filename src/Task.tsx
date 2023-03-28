@@ -12,6 +12,7 @@ export type TaskSeparetedComponentPropsType = {
     renameTaskTitle: (taskId: string, title: string) => void
     removeTask:(taskID: string)=> void
 
+
 }
 
 export const Task = React.memo(({
